@@ -1,5 +1,6 @@
 [![Travis-CI Build Status](https://travis-ci.org/pierreroudier/spectacles.svg?branch=master)](https://travis-ci.org/pierreroudier/spectacles)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/spectacles)](https://CRAN.R-project.org/package=spectacles)
+[![Total_Downloads](http://cranlogs.r-pkg.org/badges/grand-total/spectacles)](https://cran.r-project.org/package=spectacles)
 
 # Welcome to the spectacles project page
 
@@ -14,7 +15,13 @@ The `spectacles` package is making it easy (or at least *easier*!) to handle spe
 
 ## Installation
 
-`spectacles` is not on CRAN (yet?), but you can install the latest version using the `devtools` package:
+The stable version of `spectacles` is on CRAN (:tada:): 
+
+```
+install.packages('spectacles')
+```
+
+You can also install the development version using the `devtools` package:
 
 ```
 # Install devtools if you don't have it on your machine

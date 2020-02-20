@@ -10,7 +10,7 @@ if (!isGeneric("aggregate_spectra"))
 #' @description Aggregates spectral and data information of a \code{Spectra} object using a
 #' user-defined function
 #' 
-#' @details There is two distinct function for \code{Spectra} and \code{SpectraDataFrame} classes. For \code{SpectraDataFrame} objects, associated data is also aggregated using the function provided by the \code{fun} option. Additionally, the method for \code{SpectraDataFrame} has an \code{id} option that allows to specify an attribute which will be used to split the object, apply sequentially the \code{fun} function, and recombine the results in an unique object.
+#' @details For \code{SpectraDataFrame} objects, associated data is also aggregated using the function provided by the \code{fun} option. Additionally, the method for \code{SpectraDataFrame} has an \code{id} option that allows to specify an attribute which will be used to split the object, apply sequentially the \code{fun} function, and recombine the results in an unique object.
 #' @param obj see below
 #' @param fun see below
 #' @param id see below
@@ -36,7 +36,7 @@ if (!isGeneric("aggregate_spectra"))
 #' 
 #' }
 #' @return An object of the same class as \code{obj}
-#' @author Pierre Roudier \url{pierre.roudier@@gmail.com}
+#' @author Pierre Roudier \email{pierre.roudier@@gmail.com}
 #' @seealso \code{\link{apply_spectra}}
 #' @examples
 #' 
@@ -51,7 +51,11 @@ if (!isGeneric("aggregate_spectra"))
 #' # Aggregation factor-wise
 #' 
 #' # Generate some kind of factor
-#' australia$fact <- sample(LETTERS[1:3], size = nrow(australia), replace = TRUE)
+#' australia$fact <- sample(
+#'   LETTERS[1:3], 
+#'   size = nrow(australia), 
+#'   replace = TRUE
+#' )
 #' m <- aggregate_spectra(australia, fun = mean, id = 'fact')
 #' plot(m)
 setMethod("aggregate_spectra", "Spectra",
@@ -111,7 +115,18 @@ setMethod("aggregate_spectra", "SpectraDataFrame",
         s <- s[, -1]
         
         # new data slot
-        d <- ddply(features(obj), id, colwise(fun, ...))
+        dat_s <- features(obj)
+        
+        # testing if there is any other column than 
+        # just the ID
+        if(ncol(dat_s) > 1) {
+          d <- ddply(features(obj), id, colwise(fun, ...))
+        } else { 
+          # If that's only the ID, we need to explicitely 
+          # create the data.frame
+          d <- data.frame(unique(features(obj)[,id])) 
+          names(d) <- id
+        }
         
         # recompose the object
         res <- SpectraDataFrame(wl = wl(obj), nir = s, units = wl_units(obj), data = d)

@@ -17,7 +17,7 @@
 #' @param data object of class \code{"data.frame"} containing the attribute
 #' data
 #' @return a new \code{"SpectraDataFrame"} object
-#' @author Pierre Roudier \url{pierre.roudier@@gmail.com}
+#' @author Pierre Roudier \email{pierre.roudier@@gmail.com}
 #' @seealso \code{\link{spectra}}, \code{\link{wl}},
 #' \code{\link{Spectra-class}}
 #' @examples
@@ -98,11 +98,17 @@
       }
     }
   }
+  
   if (is(data, "numeric") | is(data, "integer"))
     data <- as.data.frame(data)
 
-  rownames(data) <- id[, 1]
-
+  # We only use rownames if there's no duplicated IDs. rownames are purely aesthetic.
+  if (!any(duplicated(id[, 1]))) {
+    rownames(data) <- id[, 1]
+  } else {
+    rownames(data) <- NULL
+  }
+  
   new("SpectraDataFrame", wl=wl, nir=nir, id=id, units=units, data=data)
 }
 
@@ -161,14 +167,17 @@ if (!isGeneric("features"))
 #' 
 #' \code{features(object, safe=TRUE, key=NULL, exclude_id=TRUE) <- value}
 #' 
-#' \tabular{rll}{ \tab \code{object} \tab A \code{Spectra} object \cr \tab
+#' \tabular{rll}{ 
+#' 
+#' \tab \code{object} \tab A \code{Spectra} object \cr \tab
 #' \code{safe} \tab Logical. If TRUE, data is being added to the object using a
-#' SQL join (using a key field given by the \code{key} option), otherwise it is
+#' SQL join (using a key field  given by the \code{key} option), otherwise it is
 #' assumed the order of the rows is consitent with the order of the rows in
 #' \code{object} \cr \tab \code{key} \tab Character, name of the column of the
 #' data.frame storing the ids for the SQL join. Ignored if \code{safe} is
 #' \code{FALSE}. \cr \tab \code{exclude_id} \tab Logical, if \code{TRUE}, ids
-#' used for the SQL join are removed from the data slot after the join. \cr }
+#' used for the SQL join are removed from the data slot after the join.\cr 
+#' }
 #' 
 #' \bold{x=SpectraDataFrame}
 #' 
@@ -192,7 +201,7 @@ if (!isGeneric("features"))
 #' existing data. \cr }
 #' 
 #' }
-#' @author Pierre Roudier \url{pierre.roudier@@gmail.com}
+#' @author Pierre Roudier \email{pierre.roudier@@gmail.com}
 #' @seealso \code{\link{spectra}}, \code{\link{wl}},
 #' \code{\link{SpectraDataFrame-class}}
 #' @examples
@@ -473,7 +482,7 @@ setMethod("melt_spectra", "SpectraDataFrame", function(obj, attr = NULL, ...){
 #'   \item{...}{Additional arguments}
 #' }
 #' @return SpectraDataFrame object
-#' @author Pierre Roudier \url{pierre.roudier@@gmail.com}
+#' @author Pierre Roudier \email{pierre.roudier@@gmail.com}
 #' @seealso \code{\link{mutate}}
 #' @examples
 #' 

@@ -92,9 +92,9 @@
 
 ## SUMMARY
 
-if (!isGeneric("summary"))
-  setGeneric("summary", function(object, ...)
-    standardGeneric("summary"))
+# if (!isGeneric("summary"))
+#   setGeneric("summary", function(object, ...)
+#     standardGeneric("summary"))
 
 #' @title Summary 
 #' @name summary
@@ -102,6 +102,7 @@ if (!isGeneric("summary"))
 #' @aliases summary.Spectra print.summary.Spectra
 #' @usage \\method{summary}{Spectra}(object, ...)
 #' @param object an object of class \code{Spectra} or \code{SpectraDataFrame}
+#' @param x a result of \code{summary}
 #' @param ... Additional arguments passed to \code{summary}
 #' @return A \code{"summary.Spectra"} object
 #' @author Pierre Roudier \email{pierre.roudier@@gmail.com}
@@ -110,6 +111,9 @@ if (!isGeneric("summary"))
 #' data(oz)
 #' spectra(oz) <- sr_no ~ ... ~ 350:2500
 #' summary(oz)
+#' 
+#' @export summary.Spectra
+#' @export
 #' 
 summary.Spectra <- function (object, ...){
     obj = list()
@@ -128,6 +132,12 @@ summary.Spectra <- function (object, ...){
     obj
 }
 
+#' @return \code{NULL}
+#'
+#' @rdname summary
+#' @method print summary.Spectra
+#' @export print.summary.Spectra
+#' @export
 print.summary.Spectra <- function(x, ...) {
     cat(paste("Object of class ", x[["class"]], "\n", sep = ""))
     cat("Set of ", nrow(x[['id']])," spectra\n", sep = "")
@@ -608,7 +618,8 @@ setMethod("res", "Spectra", .res.Spectra)
 #' @name extraction-methods
 #' @description These methods emulates classic base methods '[', '[[' and '$' to extract or replace parts of Spectra* objects.
 #' 
-#' @aliases [ [<- [[ [[<- $ $<- [,Spectra-method [[,Spectra-method [[<-,Spectra-method [,Spectra,ANY,ANY,missing-method [,SpectraDataFrame,ANY,ANY,missing-method [[,SpectraDataFrame,ANY,missing-method [[<-,Spectra,ANY,missing-method [<-,SpectraDataFrame-method $<-,Spectra-method $,SpectraDataFrame-method
+#' @aliases [ [<- [[ [[<- $ $<- [,Spectra-method [[,Spectra-method [[<-,Spectra-method [,Spectra,ANY,ANY,missing-method [,SpectraDataFrame,ANY,ANY,missing-method [[,SpectraDataFrame,ANY,missing-method [[<-,Spectra,ANY,missing-method [<-,SpectraDataFrame-method $<-,Spectra-method $,SpectraDataFrame-method  [[<-,Spectra,ANY,missing,ANY-method 
+#' 
 #' 
 #' @docType methods
 #' 
